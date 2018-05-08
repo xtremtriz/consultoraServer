@@ -1,0 +1,64 @@
+create database consultora;
+
+use consultora;
+ 
+create table Sucursal(claveSucursal INTEGER NOT NULL,
+                nombre VARCHAR(15) NOT NULL,
+                direccion VARCHAR(20) NOT NULL,
+                telefono INTEGER NOT NULL,
+                PRIMARY KEY(claveSucursal));
+
+create table Proveedor(claveProveedor INTEGER NOT NULL,
+                nombre VARCHAR(15) NOT NULL,
+                direccion VARCHAR(20) NOT NULL,
+                telefono INTEGER NOT NULL,
+                PRIMARY KEY(claveProveedor));
+
+create table Linea(claveLinea INTEGER NOT NULL,
+                nombre VARCHAR(15) NOT NULL,
+                descripcion VARCHAR(30) NOT NULL,
+                PRIMARY KEY(claveLinea));
+
+create table Producto(
+                claveProducto INTEGER NOT NULL,
+                nombre VARCHAR(15) NOT NULL,
+                marca VARCHAR(20) NOT NULL,
+                cantidad INTEGER NOT NULL,
+                precio INTEGER NOT NULL,
+                claveLin INTEGER NOT NULL,
+                PRIMARY KEY(claveProducto),
+                FOREIGN KEY(claveLin) REFERENCES Linea(claveLinea));
+
+CREATE TABLE Tiene(
+            numeroSucursal INTEGER NOT NULL,
+            numeroProducto INTEGER NOT NULL,
+            PRIMARY KEY(numeroSucursal,numeroProducto),
+            FOREIGN KEY(numeroSucursal) REFERENCES Sucursal(claveSucursal),
+            FOREIGN KEY(numeroProducto) REFERENCES Producto(claveProducto));      
+                
+CREATE TABLE Suministra(
+            claveProduct INTEGER NOT NULL,
+            claveProveedo INTEGER NOT NULL,
+            fecha VARCHAR(45) NOT NULL,
+            cantidad INTEGER NOT NULL,
+            PRIMARY KEY(claveProduct,claveProveedo),
+            FOREIGN KEY(claveProduct) REFERENCES Producto(claveProducto),
+            FOREIGN KEY(claveProveedo) REFERENCES Proveedor(claveProveedor));
+
+CREATE TABLE Localidad(
+            estado VARCHAR(45) NOT NULL,
+            colonia VARCHAR(45) NOT NULL,
+            calle VARCHAR(45) NOT NULL,
+            numero INTEGER NOT NULL,
+            telefono INTEGER NOT NULL,
+            cp INTEGER NOT NULL,
+            claveSucursa INTEGER NOT NULL,
+            PRIMARY KEY(claveSucursa),
+            FOREIGN KEY(claveSucursa) REFERENCES Sucursal(claveSucursal));
+
+insert into proveedor values(1010,"Los paisas","Lopez Portillo", 5567842);
+insert into proveedor values(2020,"Los hermanos","Miguel Allende", 2456312);
+insert into localidad values("Estado de Mexico","Centro","Hidalgo",476,2187320,50160,10);
+insert into sucursal values(10,"Hidalgo","Hidalgo",2187320);
+insert into sucursal values(20,"Centro","Alameda",21890345);
+insert into sucursal values(30,"Americana","Las americas",2197834);
