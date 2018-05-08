@@ -159,7 +159,7 @@ public class A2ProveedorGUI extends JFrame implements ActionListener {
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }            
-            taDatos.setText(datos);  
+            //taDatos.setText(datos);  
         }
     }
 
