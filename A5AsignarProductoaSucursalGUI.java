@@ -128,7 +128,7 @@ public class A5AsignarProductoaSucursalGUI extends JFrame implements ActionListe
         }
         
         if (e.getSource() == bConsultarSucursal) {
-            datos = companyad.consultarSucursales();
+            //datos = companyad.consultarSucursales();
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }

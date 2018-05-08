@@ -149,11 +149,11 @@ public class A7LocalidadGUI extends JFrame implements ActionListener {
         }
         if (e.getSource() == bConsultarSucursal) { 
             //System.out.println("Entra");
-            String datos = companyad.consultarSucursales();
+            /*String datos = companyad.consultarSucursales();
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }            
-            taDatos.setText(datos); 
+            taDatos.setText(datos); */
         }
     }
 
