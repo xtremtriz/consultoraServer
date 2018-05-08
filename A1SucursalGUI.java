@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.StringTokenizer;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class A1SucursalGUI extends JFrame implements ActionListener {
@@ -18,9 +19,10 @@ public class A1SucursalGUI extends JFrame implements ActionListener {
     private JTextField tfNombre, tfDireccion, tfNumSucursal, tfTelefono;
     private JPanel panel1, panel2;
     private JTextArea taDatos;
+    private StringTokenizer st;
 
     private CompanyADjdbc companyad = new CompanyADjdbc();
-    
+    private Conexion conexion = new Conexion();
 
     public A1SucursalGUI() {
         super("Asignacion de Sucursal");
@@ -65,6 +67,15 @@ public class A1SucursalGUI extends JFrame implements ActionListener {
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    private void tokenizar(String datos){
+        String token = "";
+        st = new StringTokenizer(datos,"*");
+        while(st.hasMoreTokens()){
+            token = token + st.nextToken() + '\n';
+            System.out.println(token);
+            taDatos.setText(token);
+        }
+    }
 
     public JPanel getPanel2() {
         return this.panel2;
@@ -100,32 +111,53 @@ public class A1SucursalGUI extends JFrame implements ActionListener {
     
 
     public void actionPerformed(ActionEvent e) {
-        //String datos = "";
+        String datos = "";
         if(e.getSource() == bCapturar)
 		{
-			String datos="";
-			String resultado="";
+			
+			String respuesta="";
 			
 			// 1. Obtner dato de los JTextFields
 			datos = obtenerDatos();
 			
 			// 2. Checar si algun campo es vacio o saldo no numerico
 			if(datos.equals("vacio"))
-				taDatos.setText("Algun campo esta vacio...");
+				respuesta = "Algun campo esta vacio...";
 			
 			else{
+                                // 2.1 Establecer conexion con el server
+                                conexion.establecerConexion();
+                                
+                                // 2.2 Enviar la transaccion a realizar
+                                conexion.enviarDatos("AltaSucursal");
 			
-				// 3. Capturar los datos del cliente
-				resultado = companyad.AltaSucursal(datos);
+				// 2.3 Enviar los datos a capturar en la DB
+                                conexion.enviarDatos(datos);
 				
-				// 4. Desplegar resultado de la transaccion
-				taDatos.setText(resultado);
+				// 2.4 Recibir resultado de la transaccion
+                                respuesta = conexion.recibirDatos();
+                                
+                                // 2.5 Cerrar la conexion
+                                conexion.cerrarConexion();
 			}
+                        // 3. Desplegar resultado de la transaccion
+                        taDatos.setText(respuesta);
 		}
 
         if (e.getSource() == bConsultar) { 
             //System.out.println("Entra");
-            String datos = companyad.consultarSucursales();
+            // 1. Establecer conexion con el Server
+            conexion.establecerConexion();
+            // 2. Enviar transaccion a realizar
+            conexion.enviarDatos("consultarSucursales");
+            // 3. Recibir resultado de la transaccion
+            datos = conexion.recibirDatos();
+            // 4. Cerrrar conexion
+            conexion.cerrarConexion();
+            // 5. Desplegar datos
+            // taDatos.setText(datos);
+            tokenizar(datos);
+            //String datos = companyad.consultarSucursales();
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }            
