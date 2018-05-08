@@ -21,12 +21,14 @@ import java.awt.event.ActionEvent;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.BufferedInputStream;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.net.Socket;
 
@@ -106,8 +108,7 @@ public class Conexion extends JFrame {
             //taDatos.setText("no hay conexion");
         }
     }
-
-    public void cerrarConexion() {
+public void cerrarConexion() {
         try {
             bufferEntrada.close();
             bufferSalida.close();
