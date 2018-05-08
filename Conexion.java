@@ -103,6 +103,7 @@ public class Conexion extends JFrame {
                 //taDatos.append("Mensaje del Server: " + mensaje);
         } catch (IOException ioe) {
             System.out.println("Error: " + ioe);
+            //taDatos.setText("no hay conexion");
         }
     }
 
