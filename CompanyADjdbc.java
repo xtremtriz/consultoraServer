@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CompanyADjdbc {
-    //SucursalDP sucursalDP;
+    SucursalDP sucursalDP;
     ProveedorDP proveedorDP;
     LineaDP lineaDP;
     ProductoDP productoDP = new ProductoDP();
@@ -40,7 +40,7 @@ public class CompanyADjdbc {
 
 		}
 	}
-    /*String AltaSucursal(String datos) 
+    String AltaSucursal(String datos) 
     {
 		String resultado = "";
 		String insert="";
@@ -105,7 +105,7 @@ public class CompanyADjdbc {
 			datos = "ERROR en la consulta "+ sqle;	
 		}
 		return datos;	  
-    }*/
+    }
     String AltaProveedor(String datos) 
     {
 		String resultado = "";
