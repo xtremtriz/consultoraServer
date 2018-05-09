@@ -132,6 +132,7 @@ public class A4LineaGUI extends JFrame implements ActionListener {
                                 // 2.5 Cerrar la conexion
                                 conexion.cerrarConexion();
 			}
+                        taDatos.setText(respuesta);
 		}
 
         if (e.getSource() == bConsultar) {

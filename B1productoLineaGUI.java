@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.StringTokenizer;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class B1productoLineaGUI extends JFrame implements ActionListener {
@@ -18,6 +19,9 @@ public class B1productoLineaGUI extends JFrame implements ActionListener {
     private JTextField tfClaveLinea;
     private JPanel panel1, panel2;
     private JTextArea taDatos;
+    private StringTokenizer st;
+
+    private Conexion conexion = new Conexion();
 
     private CompanyADjdbc companyad = new CompanyADjdbc();
 
@@ -50,6 +54,15 @@ public class B1productoLineaGUI extends JFrame implements ActionListener {
         add(panel2);
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    private void tokenizar(String datos){
+        String token = "";
+        st = new StringTokenizer(datos,"*");
+        while(st.hasMoreTokens()){
+            token = token + st.nextToken() + '\n';
+            System.out.println(token);
+            taDatos.setText(token);
+        }
     }
 
     public JPanel getPanel2() {

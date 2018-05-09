@@ -23,7 +23,7 @@ public class A2ProveedorGUI extends JFrame implements ActionListener {
 
     private Conexion conexion = new Conexion();
     //private CompanyADjdbc companyad = new CompanyADjdbc();
-    private CompanyADjdbc companyad = new CompanyADjdbc();
+    //private CompanyADjdbc companyad = new CompanyADjdbc();
     
     public A2ProveedorGUI() {
         super("Asignacion de Proveedor");

@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.StringTokenizer;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class A5AsignarProductoaSucursalGUI extends JFrame implements ActionListener {
@@ -19,6 +20,9 @@ public class A5AsignarProductoaSucursalGUI extends JFrame implements ActionListe
     private JTextField tfNumSucursal, tfClaveProducto;
     private JPanel panel1, panel2;
     private JTextArea taDatos;
+    private StringTokenizer st;
+
+    private Conexion conexion = new Conexion();
 
     private CompanyADjdbc companyad = new CompanyADjdbc();
 
@@ -65,6 +69,15 @@ public class A5AsignarProductoaSucursalGUI extends JFrame implements ActionListe
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    private void tokenizar(String datos){
+        String token = "";
+        st = new StringTokenizer(datos,"*");
+        while(st.hasMoreTokens()){
+            token = token + st.nextToken() + '\n';
+            System.out.println(token);
+            taDatos.setText(token);
+        }
+    }
 
     public JPanel getPanel2() {
         return this.panel2;
@@ -99,47 +112,91 @@ public class A5AsignarProductoaSucursalGUI extends JFrame implements ActionListe
         if (e.getSource() == bCapturar) 
         {
 			//String datos="";
-			String resultado="";
+			String respuesta="";
 			
 			// 1. Obtner dato de los JTextFields
 			datos = obtenerDatos();
 			
 			// 2. Checar si algun campo es vacio o saldo no numerico
 			if(datos.equals("vacio"))
-				taDatos.setText("Algun campo esta vacio...");
+				respuesta = "Algun campo esta vacio...";
 			
 			else{
+                                // 2.1 Establecer conexion con el server
+                                conexion.establecerConexion();
+                                
+                                // 2.2 Enviar la transaccion a realizar
+                                conexion.enviarDatos("AltaTiene");
 			
-				// 3. Capturar los datos del cliente
-				resultado = companyad.AltaTiene(datos);
+				// 2.3 Enviar los datos a capturar en la DB
+                                conexion.enviarDatos(datos);
 				
-				// 4. Desplegar resultado de la transaccion
-				taDatos.setText(resultado);
-			}
+				// 2.4 Recibir resultado de la transaccion
+                                respuesta = conexion.recibirDatos();
+                                
+                                // 2.5 Cerrar la conexion
+                                conexion.cerrarConexion();
+				// 3. Capturar los datos del cliente
+				
+			}                        
+                        taDatos.setText(respuesta);
 		}
 
 
         if (e.getSource() == bConsultar) {
-            datos = companyad.consultarTiene();
+            //datos = companyad.consultarTiene();
+            // 1. Establecer conexion con el Server
+            conexion.establecerConexion();
+            // 2. Enviar transaccion a realizar
+            conexion.enviarDatos("consultarTiene");
+            // 3. Recibir resultado de la transaccion
+            datos = conexion.recibirDatos();
+            // 4. Cerrrar conexion
+            conexion.cerrarConexion();
+            // 5. Desplegar datos
+            // taDatos.setText(datos);
+            tokenizar(datos);
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }
-            taDatos.setText(datos); 
+            //taDatos.setText(datos); 
         }
         
         if (e.getSource() == bConsultarSucursal) {
             //datos = companyad.consultarSucursales();
+            // 1. Establecer conexion con el Server
+            conexion.establecerConexion();
+            // 2. Enviar transaccion a realizar
+            conexion.enviarDatos("consultarSucursales");
+            // 3. Recibir resultado de la transaccion
+            datos = conexion.recibirDatos();
+            // 4. Cerrrar conexion
+            conexion.cerrarConexion();
+            // 5. Desplegar datos
+            // taDatos.setText(datos);
+            tokenizar(datos);
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }
-            taDatos.setText(datos); 
+            //taDatos.setText(datos); 
         }
         if (e.getSource() == bConsultarProducto) {
-            datos = companyad.consultarProducto();
+            //datos = companyad.consultarProducto();
+            // 1. Establecer conexion con el Server
+            conexion.establecerConexion();
+            // 2. Enviar transaccion a realizar
+            conexion.enviarDatos("consultarProducto");
+            // 3. Recibir resultado de la transaccion
+            datos = conexion.recibirDatos();
+            // 4. Cerrrar conexion
+            conexion.cerrarConexion();
+            // 5. Desplegar datos
+            // taDatos.setText(datos);
+            tokenizar(datos);
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }
-            taDatos.setText(datos); 
+            //taDatos.setText(datos); 
         }
     }
 
