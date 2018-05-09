@@ -69,7 +69,6 @@ public class A1SucursalGUI extends JFrame implements ActionListener {
     }
     private void tokenizar(String datos){
         String token = "";
-        //System.out.println("hora de tokn...");
         st = new StringTokenizer(datos,"*");
         while(st.hasMoreTokens()){
             token = token + st.nextToken() + '\n';
@@ -162,7 +161,7 @@ public class A1SucursalGUI extends JFrame implements ActionListener {
             if(datos.isEmpty()){
                 datos = "Datos vacios";
             }            
-            //taDatos.setText(datos); 
+            taDatos.setText(datos); 
         }
     }
 
