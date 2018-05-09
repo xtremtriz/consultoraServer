@@ -1,10 +1,17 @@
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import java.util.StringTokenizer;
 
 public class B2proveedorProductoGUI extends JFrame implements ActionListener {
     private JButton bConsultar;
@@ -12,7 +19,7 @@ public class B2proveedorProductoGUI extends JFrame implements ActionListener {
     private JPanel panel1, panel2;
     private JTextArea taDatos;
 
-    private Conexion conexion = new Conexion();
+    private CompanyADjdbc companyad = new CompanyADjdbc();
 
     public B2proveedorProductoGUI() {
         super("Consulta de productos");
@@ -66,16 +73,6 @@ public class B2proveedorProductoGUI extends JFrame implements ActionListener {
         return datos;
     }
 
-    private void tokenizar(String datos){
-        String token = "";
-        StringTokenizer st = new StringTokenizer(datos,"*");
-        while(st.hasMoreTokens()){
-            token = token + st.nextToken() + "\n";
-            System.out.println(token);
-            taDatos.setText(token);
-        }
-    }
-
     public void actionPerformed(ActionEvent e) {
         String datos = "";
         int clave = 0;
@@ -87,22 +84,13 @@ public class B2proveedorProductoGUI extends JFrame implements ActionListener {
                 datos = "Ingrese la clave del proveedor";
             else if(clave == -2)
                 datos = "La clave del proveedor debe ser numerica";
-            else{
-                // datos = companyad.consultarProveedorProducto(clave);
-                datos = ""+clave;
-                // datos = companyad.consultarLineaProd(linea);
-                conexion.establecerConexion();
-                conexion.enviarDatos("consultarProveedorProducto");
-                conexion.enviarDatos(datos);
-                datos = conexion.recibirDatos();
-                conexion.cerrarConexion();
-                tokenizar(datos);
-            }
+            else
+                datos = companyad.consultarProveedorProducto(clave);
             if(datos.isEmpty())
                 datos = "No se encontraron registros de "+tfClaveProveedor.getText();
             //taDatos.setText(datos); 
 
-            // taDatos.setText(datos); 
+            taDatos.setText(datos); 
         }
     }
 

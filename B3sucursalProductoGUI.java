@@ -1,11 +1,17 @@
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import java.util.StringTokenizer;
 
 public class B3sucursalProductoGUI extends JFrame implements ActionListener {
     private JButton bConsultar;
@@ -13,7 +19,7 @@ public class B3sucursalProductoGUI extends JFrame implements ActionListener {
     private JPanel panel1, panel2;
     private JTextArea taDatos;
 
-    private Conexion conexion = new Conexion();
+    private CompanyADjdbc companyad = new CompanyADjdbc();
 
     public B3sucursalProductoGUI() {
         super("Consulta de productos");
@@ -67,16 +73,6 @@ public class B3sucursalProductoGUI extends JFrame implements ActionListener {
         return datos;
     }
 
-    private void tokenizar(String datos){
-        String token = "";
-        StringTokenizer st = new StringTokenizer(datos,"*");
-        while(st.hasMoreTokens()){
-            token = token + st.nextToken() + '\n';
-            System.out.println(token);
-            taDatos.setText(token);
-        }
-    }
-
     public void actionPerformed(ActionEvent e) {
         String datos = "";
         int clave = 0;
@@ -88,19 +84,12 @@ public class B3sucursalProductoGUI extends JFrame implements ActionListener {
                 datos = "Ingrese una sucursal a consultar";
             else if(clave == -2)
                 datos = "Ingrese el NUMERO de sucursal";
-            else{
-                // datos = companyad.consultarProductoSucursal(clave);
-                datos = ""+clave;
-                conexion.establecerConexion();
-                conexion.enviarDatos("consultarProductoSucursal");
-                conexion.enviarDatos(datos);
-                datos = conexion.recibirDatos();
-                conexion.cerrarConexion();
-                tokenizar(datos);
-            }
+            else
+                datos = companyad.consultarProductoSucursal(clave);
             if(datos.isEmpty())
                 datos = "No se encontraron registros de "+tfClaveSucursal.getText();
             //taDatos.setText(datos); 
+            taDatos.setText(datos); 
         }
     }
 
