@@ -1,19 +1,29 @@
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import java.util.StringTokenizer;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class B1productoLineaGUI extends JFrame implements ActionListener {
     private JButton bConsultar;
     private JTextField tfClaveLinea;
     private JPanel panel1, panel2;
     private JTextArea taDatos;
+    private StringTokenizer st;
 
-    // private CompanyADjdbc companyad = new CompanyADjdbc();
     private Conexion conexion = new Conexion();
+
+    private CompanyADjdbc companyad = new CompanyADjdbc();
 
     public B1productoLineaGUI() {
         super("Asignacion de Proveedor");
@@ -45,6 +55,15 @@ public class B1productoLineaGUI extends JFrame implements ActionListener {
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    private void tokenizar(String datos){
+        String token = "";
+        st = new StringTokenizer(datos,"*");
+        while(st.hasMoreTokens()){
+            token = token + st.nextToken() + '\n';
+            System.out.println(token);
+            taDatos.setText(token);
+        }
+    }
 
     public JPanel getPanel2() {
         return this.panel2;
@@ -63,21 +82,11 @@ public class B1productoLineaGUI extends JFrame implements ActionListener {
                 //por si no hay un valor numerico
                 linea = Integer.parseInt(num);
                 //cla1   = Integer.parseInt(cla);
-            }catch (NumberFormatException nfe) {
+            } 
+            catch (NumberFormatException nfe) {
                 linea = -2;
-            }  
-        } 
+            }  } 
         return linea;
-    }
-
-    private void tokenizar(String datos){
-        String token = "";
-        StringTokenizer st = new StringTokenizer(datos,"*");
-        while(st.hasMoreTokens()){
-            token = token + st.nextToken() + '\n';
-            System.out.println(token);
-            taDatos.setText(token);
-        }
     }
 
      public void actionPerformed(ActionEvent e) {
@@ -91,20 +100,12 @@ public class B1productoLineaGUI extends JFrame implements ActionListener {
             }
             else if(linea == -2)
                 datos = "Ingrese el NUMERO de linea";
-            else{
-                datos = ""+linea;
-                // datos = companyad.consultarLineaProd(linea);
-                conexion.establecerConexion();
-                conexion.enviarDatos("consultarLineaProd");
-                conexion.enviarDatos(datos);
-                datos = conexion.recibirDatos();
-                conexion.cerrarConexion();
-                tokenizar(datos);
-            }
+            else
+                datos = companyad.consultarLineaProd(linea);
             // System.out.println("En GUI: "+datos);
             if(datos.isEmpty())
                 datos = "No se encontraron registros de "+tfClaveLinea.getText();
-            // taDatos.setText(datos); 
+            taDatos.setText(datos); 
         }
     }
 

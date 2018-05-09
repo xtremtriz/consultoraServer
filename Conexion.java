@@ -1,3 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+/**
+ *
+ * @author Uriel
+ */
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -10,12 +21,14 @@ import java.awt.event.ActionEvent;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.BufferedInputStream;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.net.Socket;
 
@@ -78,9 +91,12 @@ public class Conexion extends JFrame {
     }
 
     public void establecerConexion(){
+        String mensaje = "";
+
         try {
                 // 1. Establecer conexion con el server en el puerto 5005
                 socket = new Socket("localhost",5005);
+                //taDatos.append("\nSe hizo la Conexion con el Server...\n");
 
                 // 2. Preparar canales o buffers de comunicacion
                 bufferEntrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -89,10 +105,10 @@ public class Conexion extends JFrame {
                 //taDatos.append("Mensaje del Server: " + mensaje);
         } catch (IOException ioe) {
             System.out.println("Error: " + ioe);
+            //taDatos.setText("no hay conexion");
         }
     }
-
-    public void cerrarConexion() {
+public void cerrarConexion() {
         try {
             bufferEntrada.close();
             bufferSalida.close();
